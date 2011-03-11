@@ -86,8 +86,7 @@ __compass_compute_all_frameworks ()
     : ${__compass_all_frameworks:=$(__compass_list_all_frameworks)}
 } # __compass_all_frameworks
 
-__compass_all_patterns=
-__compass_compute_all_patterns ()
+__compass_list_all_patterns ()
 {
     local patterns fmw
     __compass_compute_all_frameworks
@@ -95,7 +94,13 @@ __compass_compute_all_patterns ()
     fmw=$(echo -n "$__compass_all_frameworks" | tr -s '\n' '|')
     patterns=( "$(compass frameworks | grep -oE "(${fmw})/[^ ]+")" )
 
-    : ${__compass_all_patterns:=$patterns}
+    echo "${patterns[@]}"
+} # __compass_list_all_patterns
+
+__compass_all_patterns=
+__compass_compute_all_patterns ()
+{
+    : ${__compass_all_patterns:=$(__compass_list_all_patterns)}
 } # __compass_compute_all_patterns
 
 _compass ()
@@ -132,9 +137,6 @@ _compass ()
     fi
 
     case "$prev" in
-        help)
-            __compasscomp $primary_commands $other_commands
-            ;;
         compile|interactive|stats|unpack|validate)
             __compasscomp_cur $global_options $project_options
             ;;
@@ -150,6 +152,9 @@ _compass ()
             ;;
         grid-img)
             __compasscomp_cur $global_options
+            ;;
+        help)
+            __compasscomp $primary_commands $other_commands
             ;;
         init)
             __compass_compute_all_patterns
