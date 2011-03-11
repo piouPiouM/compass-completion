@@ -35,7 +35,7 @@ fi
    3. Put in the `~/.bash_completion` file the following code:
 
       <pre>
-# source user completion directory definitions
+\# source user completion directory definitions
 if [[ -d $USER_BASH_COMPLETION_DIR && -r $USER_BASH_COMPLETION_DIR && \
     -x $USER_BASH_COMPLETION_DIR ]]; then
   for i in $(LC_ALL=C command ls "$USER_BASH_COMPLETION_DIR"); do
