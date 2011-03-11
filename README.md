@@ -19,10 +19,12 @@ Otherwise, the most comprehensive methodology is as follows:
 
    2. Put the following lines in your `.bashrc` to enable the bash completion:
 
-      <pre><code>export USER_BASH_COMPLETION_DIR=~/bash_completion.d
-        if [ -f /etc/bash_completion ]; then
-            . /etc/bash_completion
-        fi</code></pre>
+      <pre>
+export USER_BASH_COMPLETION_DIR=~/bash_completion.d
+if [ -f /etc/bash_completion ]; then
+    . /etc/bash_completion
+fi
+</pre>
 
       *Note:* the bash_completion script can be at a different location depending on your system, like:
 
@@ -32,16 +34,18 @@ Otherwise, the most comprehensive methodology is as follows:
 
    3. Put in the `~/.bash_completion` file the following code:
 
-      <pre><code># source user completion directory definitions
-      if [[ -d $USER_BASH_COMPLETION_DIR && -r $USER_BASH_COMPLETION_DIR && \
-            -x $USER_BASH_COMPLETION_DIR ]]; then
-          for i in $(LC_ALL=C command ls "$USER_BASH_COMPLETION_DIR"); do
-              i=$USER_BASH_COMPLETION_DIR/$i
-              [[ ${i##*/} != @(*~|*.bak|*.swp|\#*\#|*.dpkg*|*.rpm@(orig|new|save)|Makefile*) \
-                 && -f $i && -r $i ]] && . "$i"
-          done
-      fi
-      unset i</code></pre>
+      <pre>
+# source user completion directory definitions
+if [[ -d $USER_BASH_COMPLETION_DIR && -r $USER_BASH_COMPLETION_DIR && \
+    -x $USER_BASH_COMPLETION_DIR ]]; then
+  for i in $(LC_ALL=C command ls "$USER_BASH_COMPLETION_DIR"); do
+      i=$USER_BASH_COMPLETION_DIR/$i
+      [[ ${i##*/} != @(*~|*.bak|*.swp|\#*\#|*.dpkg*|*.rpm@(orig|new|save)|Makefile*) \
+         && -f $i && -r $i ]] && . "$i"
+  done
+fi
+unset i
+</pre>
 
 2. Copy the `compass-completion.sh` file in your ~/bash_completion.d (e.g. `~/bash_completion.d/compass`).
 3. Reload your shell.
