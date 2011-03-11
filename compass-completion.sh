@@ -103,8 +103,6 @@ _compass ()
     local cur cword prev
     local global_options project_options primary_commands other_commands
 
-    __compass_compute_all_patterns
-
     COMPREPLY=()
     _get_comp_words_by_ref cur prev cword
 
@@ -143,6 +141,10 @@ _compass ()
         config)
             __compasscomp_cur $global_options $project_options "--debug"
             ;;
+        create)
+            __compass_compute_all_patterns
+            __compasscomp_cur $global_options "--using --syntax --prepare --bare"
+            ;;
         frameworks)
             __compasscomp_cur $global_options "--bare"
             ;;
@@ -150,6 +152,7 @@ _compass ()
             __compasscomp_cur $global_options
             ;;
         init)
+            __compass_compute_all_patterns
             __compasscomp_cur $global_options $project_options "--using --syntax --prepare"
             ;;
         install)
