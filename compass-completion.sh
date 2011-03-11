@@ -62,23 +62,48 @@
 # [compass]: http://compass-style.org/
 # [license]: http://opensource.org/licenses/mit-license.php "The MIT License"
 
+
 __compasscomp_cur ()
 {
     [[ "$cur" == --* ]] && __compasscomp "$*"
     return 0
-}
+} # __compasscomp_cur
 
 __compasscomp ()
 {
     COMPREPLY=( $(compgen -W "$*" -- "$cur") )
     return 0
-}
+} # __compasscomp
+
+__compass_list_all_frameworks ()
+{
+    echo "$(compass frameworks --quiet)"
+} # __compass_list_all_frameworks
+
+__compass_all_frameworks=
+__compass_compute_all_frameworks ()
+{
+    : ${__compass_all_frameworks:=$(__compass_list_all_frameworks)}
+} # __compass_all_frameworks
+
+__compass_all_patterns=
+__compass_compute_all_patterns ()
+{
+    local patterns fmw
+    __compass_compute_all_frameworks
+
+    fmw=$(echo -n "$__compass_all_frameworks" | tr -s '\n' '|')
+    patterns=( "$(compass frameworks | grep -oE "(${fmw})/[^ ]+")" )
+
+    : ${__compass_all_patterns:=$patterns}
+} # __compass_compute_all_patterns
 
 _compass ()
 {
     local cur cword prev
     local global_options project_options primary_commands other_commands
-    local frameworks patterns fmw
+
+    __compass_compute_all_patterns
 
     COMPREPLY=()
     _get_comp_words_by_ref cur prev cword
@@ -95,11 +120,6 @@ _compass ()
 
     other_commands="config frameworks grid-img imports install \
                     interactive stats unpack validate"
-
-    frameworks="$(compass frameworks --quiet)"
-    fmw=$(echo -n "$frameworks" | tr -s '\n' '|')
-    patterns=( "$(compass frameworks | grep -oE "(${fmw})/[^ ]+")" )
-    unset fmw
 
     # The compass command
     if [[ cword -eq 1 ]]; then
@@ -154,10 +174,10 @@ _compass ()
             __compasscomp "sass scss"
             ;;
         --using)
-            __compasscomp $frameworks $patterns
+            __compasscomp "$__compass_all_frameworks" "$__compass_all_patterns"
             ;;
     esac
 
-} # _compass()
+} # _compass
 
 complete -o default -F _compass compass

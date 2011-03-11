@@ -53,7 +53,7 @@ unset i
 License
 -------
 
-Copyright (c) 2011 [Mehdi Kabab][blog]
+Copyright (c) 2011 [Mehdi Kabab][blog]  
 Released under [MIT License][license].
 
 [blog]: http://pioupioum.fr/
