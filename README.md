@@ -40,7 +40,7 @@ if [[ -d $USER_BASH_COMPLETION_DIR && -r $USER_BASH_COMPLETION_DIR && \
     -x $USER_BASH_COMPLETION_DIR ]]; then
   for i in $(LC_ALL=C command ls "$USER_BASH_COMPLETION_DIR"); do
       i=$USER_BASH_COMPLETION_DIR/$i
-      [[ ${i##*/} != @(*~|*.bak|*.swp|\#*\#|*.dpkg*|*.rpm@(orig|new|save)|Makefile*) \
+      [[ ${i##\*/} != @(\*~|\*.bak|\*.swp|\#\*\#|\*.dpkg\*|\*.rpm@(orig|new|save)|Makefile\*) \
          && -f $i && -r $i ]] && . "$i"
   done
 fi
